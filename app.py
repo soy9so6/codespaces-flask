@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime
 from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
@@ -20,7 +21,7 @@ def load_tasks():
 
 def save_tasks():
     with open(DATA_FILE, "w") as f:
-        json.dump(tasks, f)
+        json.dump(tasks, f, indent=2)
 
 load_tasks()
 
@@ -35,7 +36,20 @@ def add_task():
     data = request.get_json()
     if not data or "title" not in data or not data["title"].strip():
         return jsonify({"error": "Title is required"}), 400
-    task = {"id": next_id, "title": data["title"].strip(), "completed": False}
+    
+    task = {
+        "id": next_id,
+        "title": data["title"].strip(),
+        "completed": False,
+        "priority": data.get("priority", "medium"),
+        "dueDate": data.get("dueDate"),
+        "createdAt": datetime.now().isoformat()
+    }
+    
+    # Validate priority
+    if task["priority"] not in ["high", "medium", "low"]:
+        task["priority"] = "medium"
+    
     tasks.append(task)
     next_id += 1
     save_tasks()
@@ -43,19 +57,38 @@ def add_task():
 
 @app.route("/tasks/<int:task_id>", methods=["PUT"])
 def update_task(task_id):
+    data = request.get_json()
+    
     for task in tasks:
         if task["id"] == task_id:
-            task["completed"] = not task["completed"]
+            if data:
+                # Update fields if provided
+                if "title" in data:
+                    task["title"] = data["title"].strip()
+                if "completed" in data:
+                    task["completed"] = data["completed"]
+                if "priority" in data:
+                    if data["priority"] in ["high", "medium", "low"]:
+                        task["priority"] = data["priority"]
+                if "dueDate" in data:
+                    task["dueDate"] = data["dueDate"]
+            else:
+                # Toggle completed if no data provided (for backward compatibility)
+                task["completed"] = not task["completed"]
+            
             save_tasks()
             return jsonify(task)
+    
     return jsonify({"error": "Task not found"}), 404
 
 @app.route("/tasks/<int:task_id>", methods=["DELETE"])
 def delete_task(task_id):
     global tasks
     new_tasks = [t for t in tasks if t["id"] != task_id]
+    
     if len(new_tasks) == len(tasks):
         return jsonify({"error": "Task not found"}), 404
+    
     tasks = new_tasks
     save_tasks()
     return jsonify({"message": "Deleted"})
@@ -68,4 +101,4 @@ def home():
 # ----------------- Run -----------------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=True)
