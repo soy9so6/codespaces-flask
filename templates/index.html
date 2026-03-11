@@ -5,20 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini Task Manager</title>
     <style>
+        /* ===== ОСНОВНЫЕ СТИЛИ ===== */
+        /* Сброс отступов для всех элементов */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* ===== СТИЛИ ДЛЯ BODY ===== */
+        /* Создаем красивый градиентный фон для всей страницы */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #7eea66 0%, #a24b68 100%);
             min-height: 100vh;
             margin: 0;
             padding: 20px;
         }
 
+        /* ===== КОНТЕЙНЕР ===== */
+        /* Белая карточка с задачами по центру */
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -28,6 +34,7 @@
             padding: 30px;
         }
 
+        /* ===== ЗАГОЛОВОК ===== */
         h1 {
             color: #333;
             margin-bottom: 30px;
@@ -38,6 +45,8 @@
             padding-bottom: 10px;
         }
 
+        /* ===== СЕКЦИЯ ДОБАВЛЕНИЯ ЗАДАЧИ ===== */
+        /* Горизонтальный ряд с полем ввода, выбором приоритета, датой и кнопкой */
         .add-task-section {
             display: flex;
             gap: 10px;
@@ -45,6 +54,7 @@
             flex-wrap: wrap;
         }
 
+        /* Поле ввода названия задачи */
         #new-task {
             flex: 2;
             min-width: 200px;
@@ -55,11 +65,13 @@
             transition: border-color 0.3s;
         }
 
+        /* Эффект при фокусе на поле ввода */
         #new-task:focus {
             outline: none;
             border-color: #667eea;
         }
 
+        /* Выпадающий список для выбора приоритета */
         .priority-select {
             flex: 1;
             min-width: 120px;
@@ -71,6 +83,7 @@
             cursor: pointer;
         }
 
+        /* Поле для выбора даты */
         .date-input {
             flex: 1;
             min-width: 150px;
@@ -80,6 +93,7 @@
             font-size: 16px;
         }
 
+        /* Кнопка добавления задачи */
         .add-btn {
             flex: 0.5;
             min-width: 100px;
@@ -98,10 +112,13 @@
             background: #5a67d8;
         }
 
+        /* Эффект нажатия на кнопку */
         .add-btn:active {
             transform: scale(0.98);
         }
 
+        /* ===== СЕКЦИЯ ФИЛЬТРОВ ===== */
+        /* Панель с фильтрами по приоритету и сортировкой */
         .filters-section {
             display: flex;
             gap: 15px;
@@ -114,6 +131,7 @@
             border-radius: 10px;
         }
 
+        /* Выпадающий список для выбора типа сортировки */
         .sort-select {
             padding: 8px 15px;
             border: 2px solid #e0e0e0;
@@ -123,12 +141,14 @@
             cursor: pointer;
         }
 
+        /* Контейнер для кнопок фильтрации по приоритету */
         .priority-filters {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
 
+        /* Кнопки фильтрации по приоритету */
         .priority-filter-btn {
             padding: 6px 12px;
             border: 2px solid transparent;
@@ -140,19 +160,21 @@
             transition: all 0.3s;
         }
 
+        /* Активная кнопка фильтра */
         .priority-filter-btn.active {
             background: #667eea;
             color: white;
         }
 
-        .priority-filter-btn[data-priority="all"] {
-            border-color: #666;
-        }
+        /* Цвета для кнопок фильтрации по приоритетам */
+        .priority-filter-btn[data-priority="all"] { border-color: #666; }
         .priority-filter-btn[data-priority="high"] { color: #e53e3e; }
         .priority-filter-btn[data-priority="medium"] { color: #ed8936; }
         .priority-filter-btn[data-priority="low"] { color: #48bb78; }
         .priority-filter-btn.active { color: white; }
 
+        /* ===== СТАТИСТИКА ЗАДАЧ ===== */
+        /* Блок с количеством задач */
         .task-stats {
             display: flex;
             gap: 15px;
@@ -160,10 +182,13 @@
             font-size: 14px;
         }
 
+        /* ===== СПИСОК ЗАДАЧ ===== */
         #task-list {
             list-style: none;
         }
 
+        /* ===== КАРТОЧКА ЗАДАЧИ ===== */
+        /* Стиль для отдельной задачи */
         .task-item {
             display: flex;
             align-items: center;
@@ -176,6 +201,7 @@
             animation: slideIn 0.3s ease;
         }
 
+        /* Анимация появления новой задачи */
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -187,20 +213,25 @@
             }
         }
 
+        /* Эффект при наведении на задачу */
         .task-item:hover {
             transform: translateX(5px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
+        /* ===== ЦВЕТОВАЯ ИНДИКАЦИЯ ПРИОРИТЕТОВ ===== */
+        /* Левая цветная полоска в зависимости от приоритета */
         .task-item.priority-high { border-left-color: #e53e3e; }
         .task-item.priority-medium { border-left-color: #ed8936; }
         .task-item.priority-low { border-left-color: #48bb78; }
 
+        /* Стиль для выполненной задачи */
         .task-item.completed {
             opacity: 0.7;
             background: #f0f0f0;
         }
 
+        /* Чекбокс для отметки выполнения */
         .task-checkbox {
             margin-right: 15px;
             width: 20px;
@@ -209,27 +240,33 @@
             accent-color: #667eea;
         }
 
+        /* Контейнер с контентом задачи */
         .task-content {
             flex: 1;
         }
 
+        /* Название задачи */
         .task-title {
             font-size: 16px;
             font-weight: 500;
             margin-bottom: 5px;
         }
 
+        /* Зачеркивание выполненной задачи */
         .task-item.completed .task-title {
             text-decoration: line-through;
             color: #999;
         }
 
+        /* ===== МЕТА-ИНФОРМАЦИЯ ЗАДАЧИ ===== */
+        /* Блок с приоритетом и датой */
         .task-meta {
             display: flex;
             gap: 15px;
             font-size: 12px;
         }
 
+        /* Значок приоритета */
         .priority-badge {
             padding: 3px 8px;
             border-radius: 12px;
@@ -238,6 +275,7 @@
             font-size: 11px;
         }
 
+        /* Цвета для значков приоритетов */
         .priority-badge.high {
             background: #fed7d7;
             color: #e53e3e;
@@ -251,6 +289,8 @@
             color: #48bb78;
         }
 
+        /* ===== ВИЗУАЛИЗАЦИЯ СРОКОВ ===== */
+        /* Блок с датой выполнения */
         .due-date {
             color: #666;
             display: flex;
@@ -258,6 +298,7 @@
             gap: 3px;
         }
 
+        /* Просроченная задача - красный цвет и иконка */
         .due-date.overdue {
             color: #e53e3e;
             font-weight: 600;
@@ -268,15 +309,18 @@
             margin-right: 3px;
         }
 
+        /* Задача на сегодня */
         .due-date.today {
             color: #ed8936;
             font-weight: 600;
         }
 
+        /* Задача на завтра */
         .due-date.tomorrow {
             color: #3182ce;
         }
 
+        /* ===== КНОПКИ ДЕЙСТВИЙ ===== */
         .task-actions {
             display: flex;
             gap: 5px;
@@ -309,6 +353,7 @@
             background: #e53e3e;
         }
 
+        /* ===== СООБЩЕНИЕ ОБ ОТСУТСТВИИ ЗАДАЧ ===== */
         .no-tasks {
             text-align: center;
             padding: 40px;
@@ -318,6 +363,7 @@
             border-radius: 8px;
         }
 
+        /* ===== МОДАЛЬНОЕ ОКНО РЕДАКТИРОВАНИЯ ===== */
         .edit-modal {
             display: none;
             position: fixed;
@@ -377,6 +423,7 @@
             color: #333;
         }
 
+        /* ===== АДАПТИВНЫЙ ДИЗАЙН ДЛЯ МОБИЛЬНЫХ ===== */
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
@@ -402,18 +449,28 @@
     <div class="container">
         <h1>📋 Mini Task Manager</h1>
         
+        <!-- ===== ФОРМА ДОБАВЛЕНИЯ НОВОЙ ЗАДАЧИ ===== -->
         <div class="add-task-section">
+            <!-- Поле для ввода названия задачи -->
             <input type="text" id="new-task" placeholder="Enter task title...">
+            
+            <!-- Выбор приоритета новой задачи -->
             <select id="task-priority" class="priority-select">
                 <option value="medium">Medium Priority</option>
                 <option value="high">High Priority</option>
                 <option value="low">Low Priority</option>
             </select>
+            
+            <!-- Выбор срока выполнения -->
             <input type="date" id="task-due-date" class="date-input">
+            
+            <!-- Кнопка добавления -->
             <button onclick="addTask()" class="add-btn">➕ Add Task</button>
         </div>
 
+        <!-- ===== ПАНЕЛЬ ФИЛЬТРАЦИИ И СОРТИРОВКИ ===== -->
         <div class="filters-section">
+            <!-- Кнопки фильтрации по приоритету -->
             <div class="priority-filters">
                 <button class="priority-filter-btn active" data-priority="all" onclick="filterTasks('all')">All</button>
                 <button class="priority-filter-btn" data-priority="high" onclick="filterTasks('high')">High</button>
@@ -421,6 +478,7 @@
                 <button class="priority-filter-btn" data-priority="low" onclick="filterTasks('low')">Low</button>
             </div>
             
+            <!-- Выбор типа сортировки -->
             <select id="sort-select" class="sort-select" onchange="changeSort()">
                 <option value="priority-desc">Priority (High to Low)</option>
                 <option value="priority-asc">Priority (Low to High)</option>
@@ -429,6 +487,7 @@
                 <option value="title-asc">Title (A-Z)</option>
             </select>
 
+            <!-- Статистика задач -->
             <div class="task-stats" id="task-stats">
                 <span>Total: <span id="total-tasks">0</span></span>
                 <span>Completed: <span id="completed-tasks">0</span></span>
@@ -436,18 +495,23 @@
             </div>
         </div>
 
+        <!-- Список задач будет вставлен сюда через JavaScript -->
         <ul id="task-list"></ul>
     </div>
 
+    <!-- ===== МОДАЛЬНОЕ ОКНО РЕДАКТИРОВАНИЯ ===== -->
     <div id="edit-modal" class="edit-modal">
         <div class="modal-content">
             <h3>Edit Task</h3>
+            <!-- Поле для редактирования названия -->
             <input type="text" id="edit-title" placeholder="Task title">
+            <!-- Выбор приоритета при редактировании -->
             <select id="edit-priority">
                 <option value="high">High Priority</option>
                 <option value="medium">Medium Priority</option>
                 <option value="low">Low Priority</option>
             </select>
+            <!-- Редактирование срока -->
             <input type="date" id="edit-due-date">
             <div class="modal-buttons">
                 <button onclick="saveEdit()" class="modal-btn save-btn">Save</button>
@@ -457,10 +521,12 @@
     </div>
 
     <script>
-        let currentFilter = 'all';
-        let currentEditId = null;
-        let tasks = [];
+        // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
+        let currentFilter = 'all';      // Текущий выбранный фильтр
+        let currentEditId = null;       // ID задачи, которую редактируем
+        let tasks = [];                 // Массив всех задач
 
+        // ===== ЗАГРУЗКА ЗАДАЧ С СЕРВЕРА =====
         async function fetchTasks() {
             try {
                 const res = await fetch('/tasks');
@@ -471,12 +537,15 @@
             }
         }
 
+        // ===== ФОРМАТИРОВАНИЕ ДАТЫ =====
         function formatDate(dateString) {
             if (!dateString) return null;
             const date = new Date(dateString);
             return date.toISOString().split('T')[0];
         }
 
+        // ===== ОПРЕДЕЛЕНИЕ СТАТУСА СРОКА =====
+        // Возвращает: 'overdue', 'today', 'tomorrow' или null
         function getDueDateStatus(dueDate) {
             if (!dueDate) return null;
             
@@ -495,33 +564,46 @@
             return null;
         }
 
+        // ===== ОТОБРАЖЕНИЕ ЗАДАЧ =====
         function displayTasks() {
             const list = document.getElementById('task-list');
+            
+            // Фильтрация задач по приоритету
             const filteredTasks = tasks.filter(task => {
                 if (currentFilter === 'all') return true;
                 return task.priority === currentFilter;
             });
 
-            // Apply sorting
+            // ===== СОРТИРОВКА ЗАДАЧ =====
             const sortBy = document.getElementById('sort-select').value;
             filteredTasks.sort((a, b) => {
                 switch(sortBy) {
                     case 'priority-desc':
+                        // Сортировка от высокого приоритета к низкому
                         const priorityWeight = { high: 3, medium: 2, low: 1 };
                         return (priorityWeight[b.priority || 'medium'] || 0) - (priorityWeight[a.priority || 'medium'] || 0);
+                    
                     case 'priority-asc':
+                        // Сортировка от низкого приоритета к высокому
                         const priorityWeightAsc = { high: 3, medium: 2, low: 1 };
                         return (priorityWeightAsc[a.priority || 'medium'] || 0) - (priorityWeightAsc[b.priority || 'medium'] || 0);
+                    
                     case 'due-date-asc':
+                        // Сортировка по дате (сначала ближайшие)
                         if (!a.dueDate) return 1;
                         if (!b.dueDate) return -1;
                         return new Date(a.dueDate) - new Date(b.dueDate);
+                    
                     case 'due-date-desc':
+                        // Сортировка по дате (сначала поздние)
                         if (!a.dueDate) return 1;
                         if (!b.dueDate) return -1;
                         return new Date(b.dueDate) - new Date(a.dueDate);
+                    
                     case 'title-asc':
+                        // Алфавитная сортировка
                         return (a.title || '').localeCompare(b.title || '');
+                    
                     default:
                         return 0;
                 }
@@ -529,7 +611,7 @@
 
             list.innerHTML = '';
             
-            // Update stats
+            // ===== ОБНОВЛЕНИЕ СТАТИСТИКИ =====
             const totalTasks = tasks.length;
             const completedTasks = tasks.filter(t => t.completed).length;
             const overdueTasks = tasks.filter(t => {
@@ -541,16 +623,19 @@
             document.getElementById('completed-tasks').textContent = completedTasks;
             document.getElementById('overdue-tasks').textContent = overdueTasks;
 
+            // Сообщение, если нет задач
             if (filteredTasks.length === 0) {
                 list.innerHTML = '<li class="no-tasks">✨ No tasks found. Add a new task to get started!</li>';
                 return;
             }
 
+            // ===== СОЗДАНИЕ HTML ДЛЯ КАЖДОЙ ЗАДАЧИ =====
             filteredTasks.forEach(task => {
                 const li = document.createElement('li');
                 li.className = `task-item priority-${task.priority || 'medium'}`;
                 if (task.completed) li.classList.add('completed');
 
+                // Чекбокс для отметки выполнения
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.className = 'task-checkbox';
@@ -561,41 +646,58 @@
                     fetchTasks();
                 };
 
+                // Контейнер с контентом задачи
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'task-content';
 
+                // Название задачи
                 const titleDiv = document.createElement('div');
                 titleDiv.className = 'task-title';
                 titleDiv.textContent = task.title;
 
+                // Мета-информация (приоритет и дата)
                 const metaDiv = document.createElement('div');
                 metaDiv.className = 'task-meta';
 
+                // Значок приоритета
                 const prioritySpan = document.createElement('span');
                 prioritySpan.className = `priority-badge ${task.priority || 'medium'}`;
                 prioritySpan.textContent = (task.priority || 'medium').toUpperCase();
 
                 metaDiv.appendChild(prioritySpan);
 
+                // ===== ОТОБРАЖЕНИЕ СРОКА С ВИЗУАЛЬНЫМ СТАТУСОМ =====
                 if (task.dueDate) {
                     const dueDateSpan = document.createElement('span');
-                    dueDateSpan.className = `due-date ${getDueDateStatus(task.dueDate) || ''}`;
+                    const status = getDueDateStatus(task.dueDate);
+                    dueDateSpan.className = `due-date ${status || ''}`;
+                    
+                    // Форматирование даты для отображения
                     const dueDate = new Date(task.dueDate);
                     const formattedDate = dueDate.toLocaleDateString('en-US', { 
                         month: 'short', 
                         day: 'numeric',
                         year: 'numeric'
                     });
-                    dueDateSpan.innerHTML = `📅 ${formattedDate}`;
+                    
+                    // Добавляем иконку в зависимости от статуса
+                    let icon = '📅';
+                    if (status === 'overdue') icon = '⚠️';
+                    else if (status === 'today') icon = '🔴';
+                    else if (status === 'tomorrow') icon = '🟡';
+                    
+                    dueDateSpan.innerHTML = `${icon} ${formattedDate}`;
                     metaDiv.appendChild(dueDateSpan);
                 }
 
                 contentDiv.appendChild(titleDiv);
                 contentDiv.appendChild(metaDiv);
 
+                // Кнопки действий
                 const actionsDiv = document.createElement('div');
                 actionsDiv.className = 'task-actions';
 
+                // Кнопка редактирования
                 const editBtn = document.createElement('button');
                 editBtn.className = 'task-btn edit-btn';
                 editBtn.textContent = 'Edit';
@@ -604,6 +706,7 @@
                     openEditModal(task);
                 };
 
+                // Кнопка удаления
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'task-btn delete-btn';
                 deleteBtn.textContent = 'Delete';
@@ -625,6 +728,7 @@
             });
         }
 
+        // ===== ДОБАВЛЕНИЕ НОВОЙ ЗАДАЧИ =====
         async function addTask() {
             const input = document.getElementById('new-task');
             const priority = document.getElementById('task-priority').value;
@@ -636,6 +740,7 @@
             }
 
             try {
+                // Отправляем POST запрос с данными новой задачи
                 await fetch('/tasks', { 
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' }, 
@@ -645,6 +750,8 @@
                         dueDate: dueDate || null
                     })
                 });
+                
+                // Очищаем форму и обновляем список
                 input.value = '';
                 document.getElementById('task-due-date').value = '';
                 fetchTasks();
@@ -653,6 +760,7 @@
             }
         }
 
+        // ===== ПЕРЕКЛЮЧЕНИЕ СТАТУСА ВЫПОЛНЕНИЯ =====
         async function toggleTask(id) {
             try {
                 await fetch(`/tasks/${id}`, { method: 'PUT' });
@@ -661,6 +769,7 @@
             }
         }
 
+        // ===== УДАЛЕНИЕ ЗАДАЧИ =====
         async function deleteTask(id) {
             try {
                 await fetch(`/tasks/${id}`, { method: 'DELETE' });
@@ -669,8 +778,10 @@
             }
         }
 
+        // ===== ФИЛЬТРАЦИЯ ПО ПРИОРИТЕТУ =====
         function filterTasks(priority) {
             currentFilter = priority;
+            // Визуально отмечаем активную кнопку
             document.querySelectorAll('.priority-filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -678,10 +789,12 @@
             displayTasks();
         }
 
+        // ===== ИЗМЕНЕНИЕ СОРТИРОВКИ =====
         function changeSort() {
             displayTasks();
         }
 
+        // ===== ОТКРЫТИЕ МОДАЛЬНОГО ОКНА РЕДАКТИРОВАНИЯ =====
         function openEditModal(task) {
             currentEditId = task.id;
             document.getElementById('edit-title').value = task.title;
@@ -690,11 +803,13 @@
             document.getElementById('edit-modal').style.display = 'flex';
         }
 
+        // ===== ЗАКРЫТИЕ МОДАЛЬНОГО ОКНА =====
         function closeEditModal() {
             document.getElementById('edit-modal').style.display = 'none';
             currentEditId = null;
         }
 
+        // ===== СОХРАНЕНИЕ ИЗМЕНЕНИЙ =====
         async function saveEdit() {
             if (!currentEditId) return;
 
@@ -708,6 +823,7 @@
             }
 
             try {
+                // Отправляем PUT запрос с обновленными данными
                 await fetch(`/tasks/${currentEditId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
@@ -724,7 +840,7 @@
             }
         }
 
-        // Close modal when clicking outside
+        // ===== ЗАКРЫТИЕ МОДАЛЬНОГО ОКНА ПРИ КЛИКЕ ВНЕ ЕГО =====
         window.onclick = function(event) {
             const modal = document.getElementById('edit-modal');
             if (event.target === modal) {
@@ -732,7 +848,7 @@
             }
         };
 
-        // Initial fetch
+        // ===== ПЕРВОНАЧАЛЬНАЯ ЗАГРУЗКА =====
         fetchTasks();
     </script>
 </body>
